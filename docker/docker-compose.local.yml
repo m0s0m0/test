@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  apis:
+    restart: always
+    image: apis:local
+    container_name: test_service
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    networks:
+      - post_network
+    volumes:
+      - ..:/app
+
+
+  db:
+    image: nouchka/sqlite3:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./db/:/root/db/
+
+  redis:
+    image: redis:latest
+    container_name: redis_service
+    ports:
+      - "6379:6379"
+    networks:
+      - post_network
+    volumes:
+      - redis-data:/data
+
+volumes:
+  db-data:
+    driver: local
+  redis-data:
+    driver: local
+
+networks:
+  post_network:

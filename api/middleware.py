@@ -14,20 +14,6 @@ class AuthenticationMiddleware(MiddlewareMixin):
         if 'authorization' in request.headers:
             token  = request.headers['authorization']
             is_valid_request, user_id = decode_jwt(token)
-
             if not is_valid_request:
                 return JsonResponse({'message': "Authentixation Error"})
-
             setattr(request, 'user_id', user_id)
-
-
-
-        # # Code to be executed for each request before
-        # # the view (and later middleware) are called.
-
-        # response = get_response(request)
-
-        # # Code to be executed for each request/response after
-        # # the view is called.
-
-        # return response

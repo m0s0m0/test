@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'api'
 ]
 
+CACHE_TTL = 60 * 5
 
 JWT_SECRET = 'hellothisissecret'
 
@@ -84,6 +85,19 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 
 # Password validation
